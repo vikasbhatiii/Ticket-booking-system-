@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Train Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f4f4f4;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .logout-btn {
+      background-color: #dc3545;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .logout-btn:hover {
+      background-color: #c82333;
+    }
+    .results {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h2>Hello, <span id="user-name">User</span> - Train Booking</h2>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="card p-4">
+      <h4>Search Trains</h4>
+      <form id="train-form">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="from" class="form-label">From Station</label>
+            <input type="text" class="form-control" id="from" placeholder="Enter departure station" required>
+          </div>
+          <div class="col-md-6">
+            <label for="to" class="form-label">To Station</label>
+            <input type="text" class="form-control" id="to" placeholder="Enter destination station" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="departure" class="form-label">Travel Date</label>
+            <input type="date" class="form-control" id="departure" required>
+          </div>
+          <div class="col-md-6">
+            <label for="passengers" class="form-label">Passengers</label>
+            <input type="number" class="form-control" id="passengers" min="1" value="1" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search Trains</button>
+      </form>
+    </div>
+
+    <div id="results" class="results"></div>
+  </div>
+
+  <script>
+    // Load logged-in user name
+    window.onload = function () {
+      const user = JSON.parse(localStorage.getItem('loggedInUser'));
+      document.getElementById('user-name').textContent = user?.name || "User";
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      alert("You have been logged out.");
+      window.location.href = "Login.html";
+    }
+
+    // Handle form submission
+    document.getElementById('train-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      const date = document.getElementById('departure').value;
+      const passengers = parseInt(document.getElementById('passengers').value);
+
+      const pricePerTicket = 100;
+      const total = pricePerTicket * passengers;
+
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = `
+        <div class="card mt-4 p-3">
+          <h5>Available Train</h5>
+          <p><strong>From:</strong> ${from}</p>
+          <p><strong>To:</strong> ${to}</p>
+          <p><strong>Date:</strong> ${date}</p>
+          <p><strong>Passengers:</strong> ${passengers}</p>
+          <hr>
+          <p>🚆 Train: Superfast 201 | Departure: 06:45 AM | Arrival: 01:30 PM | Price per ticket: $${pricePerTicket}</p>
+          <p><strong>Total Price:</strong> $${total}</p>
+          <button class="btn btn-success" onclick="bookTrain('${from}', '${to}', '${date}', ${passengers}, ${total})">Book Now</button>
+        </div>
+      `;
+    });
+
+    function bookTrain(from, to, date, passengers, total) {
+      const user = JSON.parse(localStorage.getItem('loggedInUser'));
+
+      const booking = {
+        type: 'Train',
+        name: user?.name || "User",
+        transport: 'Superfast 201',
+        from: from,
+        to: to,
+        date: date,
+        passengers: passengers,
+        amount: total,
+        departure: '06:45 AM',
+        arrival: '01:30 PM'
+      };
+
+      localStorage.setItem('confirmationDetails', JSON.stringify(booking));
+      window.location.href = 'TrainPayment.html';
+    }
+  </script>
+</body>
+</html>

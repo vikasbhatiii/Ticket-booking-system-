@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f9f9f9; }
+    .container { margin-top: 50px; max-width: 600px; }
+    .card { padding: 30px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="text-center mb-4">Movie Ticket Booking</h2>
+  <div class="card shadow">
+    <form id="movie-form">
+      <div class="mb-3">
+        <label for="movie" class="form-label">Select Movie</label>
+        <select class="form-control" id="movie" required>
+          <option value="">--Choose a movie--</option>
+          <option value="Avengers">Avengers: Endgame</option>
+          <option value="Batman">The Batman</option>
+          <option value="Oppenheimer">Oppenheimer</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" class="form-control" id="date" required>
+      </div>
+      <div class="mb-3">
+        <label for="tickets" class="form-label">Number of Tickets</label>
+        <input type="number" class="form-control" id="tickets" min="1" value="1" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Book Now</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById("movie-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const movie = document.getElementById("movie").value;
+    const date = document.getElementById("date").value;
+    const tickets = parseInt(document.getElementById("tickets").value);
+    const pricePerTicket = 300;
+    const totalAmount = pricePerTicket * tickets;
+
+    const bookingDetails = {
+      type: "Movie",
+      movie,
+      date,
+      tickets,
+      amount: totalAmount
+    };
+
+    localStorage.setItem("confirmationDetails", JSON.stringify(bookingDetails));
+    window.location.href = "MoviePayment.html";
+  });
+</script>
+
+</body>
+</html>

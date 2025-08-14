@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard - Ticket Booking System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      overflow-y: auto;
+    }
+
+    /* Overlay to darken the background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      margin-top: 50px;
+    }
+
+    .card {
+      cursor: pointer;
+      transition: transform 0.2s;
+      color: #000;
+      background-color: sienna;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .logout-btn {
+      background-color: #dc3545;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container text-center">
+    <div class="header">
+      <h2>Welcome, <span id="user-name">User</span></h2>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+      <!-- Flight -->
+<div class="col">
+  <div class="card h-100" onclick="navigateTo('flight.html')">
+    <img src="data:image/png;base64,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" class="card-img-top p-4" alt="Flight" style="height: 150px;" />
+    <div class="card-body">
+      <h5 class="card-title">Flight Booking</h5>
+      <p class="card-text">Book domestic and international flights easily.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Train -->
+<div class="col">
+  <div class="card h-100" onclick="navigateTo('train.html')">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAY1BMVEX///8AAACenp6JiYnCwsL29vb8/PyGhoaRkZGsrKzT09O+vr7l5eUqKipOTk7W1tbe3t4zMzNGRkaAgIB0dHRhYWHLy8umpqaXl5c/Pz/w8PC2trYPDw9sbGxTU1MhISEaGhpIU1NdAAAExklEQVR4nO2b6ZKqMBCFQQibqOyIgPr+T3klYVNBwnittNb5fqkTrXMG0kl3B00DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN+IdfL9k6VaxX/B99w6DGvX81UreRc/c+tK51S1m32xH9/Mk50+YpdszK/0c9o6dag/EdbO9qRa2zrYNk4nnLR+0njLVCuUxTLj86yT1s85Nr8hvFludHntRHCJXPJ2WCLjRJAQv9ms+E5u7j+Q37uhfW22d2J33uPfvfvJtFWhUZp7rZfs8e/Z3bqj71RolMV/mBXO9gHnYUCgWvELSrmZP+CqVvyCeFn+PbFqxS/YrzWzV634BVLL5ZiLasXzsLVedJ3uuhm0CtPSXKCs26F0w5nJ9V1NqbFXPlhqrBJcri+XG5yvGayAYyOveFr2p8mKZvTxs4rewObR9mlDNo3H47j9WUVvkKw3k3xW0Ruk682cP6voDfbrzdDdAvyUmWi9meizit7g98xEv2RmJ5nYb3kGXXxW0RtwM3ostRNmfIUlb0Z3ArZI0FYDiN9mzUpoOAsYZ/1bzKyArpnVJYAfM0N3B/BTZtL1ZlLVmmdZ0c7ooJvP2COV12pOf3UdvaGbaY7K4unGKKa9FMZmdDs6qjXPMrSS9pamZZONzTDTNGuIFHSrM0OrqdlsnibL6HHTODf7t6VqzbN4vcamVXGajAdJY2ZofUjmCwoYek2Ff1M8WUa/3K6FP0wnwgc2hgi2r+dONYRpPUyZSrXiF5yn9c9Dt9L0hzYg3fl/Y60Z1Xpfki/rH0N3lWmwVuVnEe0TGtph4TzTmPCgWu0C1vTqMsWlJH5hNI0dZc0c6TZne6Z3Mc8kX3G6MZBaOs90+8x3eDOZzJiC7g7zgdPj4aUnnK+4x34J64bG4iKKUv56Ci2NoiJmYixhPNd1TRGcSz93J8l9npAe2fY2gPDMOdxEVi4/rbCfrzslvFhYZG6T/ZDdBHhN++jo89rLwZzzoutmY1pP/eYKPp9JJUJ53Gxc0Xip+ZtpjqW4ak7g8jc04dO75KlzMDv9+bTnZ7mq0iIeAwLeqXQWJFo8RuyobwJ4rSJcVOnzTIF4PmPwGS5xwFccTTM+r+gPeLFt2zETVcCz79oLuCLm6R7jXyQV0oSJnHWhdzHd3Hlt6GaiakDIjThompzEfzvxJTKablDapj9kYoHPM+UoyHlUvpimRB0gNE3+rSoPeA3kQqVOazbr4/HQtjBils2ul6OVM2OiSRBmB/51Wsdo2ykdSqsyRQ6XUrkmI5gjquax9NrRPQVl0CtslKJTubxeDgTivryS254Fbd6/quHaNnQLYnlAV1+6rtqgWG3fuSZREchi44Zt9wXznPFP5IhZ/zXNtvknkqfVP+Kl1eId2heXdc82xf0DN4euHarMzaG9SxzWPeNnPj5Bt4Df5aM7thEvrormT9BaSPt0/7z29EzaNw6T7qtqkpygbcUUvttpe5X4T2N2N6judi3oSIUbU2xajp7X9ZhjrVzex9xT9pOs8rz2B1VsbLogfOrulMufbvdDFwPOXXxWmH5axk5Q/a3fwjZV+wMGgSS6f6L8j1ss1v/A/9UFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4L/wA9sz1B8iZm4QAAAABJRU5ErkJggg==" class="card-img-top p-4" alt="Train" style="height: 150px;" />
+    <div class="card-body">
+      <h5 class="card-title">Train Booking</h5>
+      <p class="card-text">Check train schedules and reserve your seat.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Movie -->
+<div class="col">
+  <div class="card h-100" onclick="navigateTo('movie.html')">
+    <img src="https://png.pngtree.com/element_our/png/20181113/clapperboard-film-logo-icon-design-template-vector-isolated-png_236642.jpg" class="card-img-top p-4" alt="Movie" style="height: 150px;" />
+    <div class="card-body">
+      <h5 class="card-title">Movie Tickets</h5>
+      <p class="card-text">Browse now showing movies and book your seat.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Bus -->
+<div class="col">
+  <div class="card h-100" onclick="navigateTo('bus.html')">
+    <img src="data:image/jpeg;base64,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" class="card-img-top p-4" alt="Bus" style="height: 150px;" />
+    <div class="card-body">
+      <h5 class="card-title">Bus Booking</h5>
+      <p class="card-text">Reserve seats on local and interstate buses.</p>
+    </div>
+  </div>
+</div>
+
+
+  <!-- JavaScript -->
+  <script>
+    function navigateTo(page) {
+      window.location.href = page;
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      alert('You have been logged out.');
+      window.location.href = 'Login.html';
+    }
+
+    // Check login and display user name
+    window.onload = function () {
+      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+      document.getElementById('user-name').textContent = loggedInUser.name || "User";
+    }
+  </script>
+</body>
+</html>

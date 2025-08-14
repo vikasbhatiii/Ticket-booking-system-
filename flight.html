@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flight Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f4f4f4;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .logout-btn {
+      background-color: #dc3545;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .logout-btn:hover {
+      background-color: #c82333;
+    }
+    .results {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h2>Hello, <span id="user-name">User</span> - Flight Booking</h2>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="card p-4">
+      <h4>Search Flights</h4>
+      <form id="flight-form">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="from" class="form-label">From</label>
+            <input type="text" class="form-control" id="from" placeholder="Enter departure city" required>
+          </div>
+          <div class="col-md-6">
+            <label for="to" class="form-label">To</label>
+            <input type="text" class="form-control" id="to" placeholder="Enter destination city" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="departure" class="form-label">Departure Date</label>
+            <input type="date" class="form-control" id="departure" required>
+          </div>
+          <div class="col-md-6">
+            <label for="passengers" class="form-label">Passengers</label>
+            <input type="number" class="form-control" id="passengers" min="1" value="1" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search Flights</button>
+      </form>
+    </div>
+
+    <div id="results" class="results"></div>
+  </div>
+
+  <script>
+    // Session check
+    window.onload = function () {
+      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+      
+      document.getElementById('user-name').textContent = loggedInUser.name || "User";
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      alert('You have been logged out.');
+      window.location.href = 'Login.html';
+    }
+
+    // Booking redirect function (must be global)
+    function bookFlight() {
+      alert('Please proceed to payment.');
+      window.location.href = 'FlightPayment.html';
+    }
+
+    // Handle flight search
+   document.getElementById('flight-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const from = document.getElementById('from').value;
+  const to = document.getElementById('to').value;
+  const date = document.getElementById('departure').value;
+  const passengers = parseInt(document.getElementById('passengers').value);
+  
+  const basePrice = 250;
+  const totalPrice = basePrice * passengers;
+
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.innerHTML = `
+    <div class="card mt-4 p-3">
+      <h5>Search Results</h5>
+      <p><strong>From:</strong> ${from}</p>
+      <p><strong>To:</strong> ${to}</p>
+      <p><strong>Date:</strong> ${date}</p>
+      <p><strong>Passengers:</strong> ${passengers}</p>
+      <hr>
+      <p>🔍 Sample Result: Flight from ${from} to ${to} on ${date} for ${passengers} passenger(s).</p>
+      <p>✈️ Airline: Sample Air | Flight No: SA123 | Departure: 10:00 AM | Price per ticket: $${basePrice}</p>
+      <p><strong>Total Price:</strong> $${totalPrice}</p>
+      <button class="btn btn-success" onclick="bookFlight()">Book Now</button>
+    </div>
+  `;
+});
+
+  </script>
+</body>
+</html>

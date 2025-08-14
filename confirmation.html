@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Confirmation </title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header>
+  <div class="logo"><h2></h2></div>
+  <nav>
+    <a href="Index.html">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+    <a href="#">Login</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2>Booking Confirmed!</h2>
+  <p>Thank you for booking with us.</p>
+  <div id="confirmationDetails"></div>
+  <button id="downloadTicket">Download Ticket (PDF)</button>
+</div>
+
+<footer>
+  &copy; 2025 BookMyTicket. All rights reserved.
+</footer>
+
+<script>
+  const confirmationDetails = document.getElementById('confirmationDetails');
+  const booking = JSON.parse(localStorage.getItem('bookingDetails'));
+
+  if (!booking) {
+    confirmationDetails.innerHTML = '<p>Unable to retrieve booking details.</p>';
+  } else {
+    const confirmationNumber = 'BM' + Math.floor(Math.random()*900000 + 100000);
+    confirmationDetails.innerHTML = `
+      <p><strong>Confirmation Number:</strong> ${confirmationNumber}</p>
+      <p><strong>From:</strong> ${booking.from}</p>
+      <p><strong>To:</strong> ${booking.to}</p>
+      <p><strong>Date:</strong> ${booking.date}</p>
+      <p><strong>Departure:</strong> ${booking.selectedTicket.departure}</p>
+      <p><strong>Arrival:</strong> ${booking.selectedTicket.arrival}</p>
+      <p><strong>Tickets:</strong> ${booking.tickets}</p>
+    `;
+  }
+
+  // Dummy download ticket function
+  document.getElementById('downloadTicket').addEventListener('click', () => {
+    alert('Downloading ticket PDF... (simulated)');
+  });
+</script>
+</body>
+</html>

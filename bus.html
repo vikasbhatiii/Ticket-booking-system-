@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bus Ticket Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body { background-color: #f9f9f9; }
+    .container { margin-top: 50px; max-width: 600px; }
+    .card { padding: 30px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="text-center mb-4">Bus Ticket Booking</h2>
+  <div class="card shadow">
+    <form id="bus-form">
+      <div class="mb-3">
+        <label for="route" class="form-label">Select Route</label>
+        <select class="form-control" id="route" required>
+          <option value="">--Choose a route--</option>
+          <option value="CityA-CityB">City A to City B</option>
+          <option value="CityB-CityC">City B to City C</option>
+          <option value="CityA-CityC">City A to City C</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label">Date of Journey</label>
+        <input type="date" class="form-control" id="date" required />
+      </div>
+      <div class="mb-3">
+        <label for="passengers" class="form-label">Number of Passengers</label>
+        <input type="number" class="form-control" id="passengers" min="1" value="1" required />
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Book Now</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById("bus-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const route = document.getElementById("route").value;
+    const date = document.getElementById("date").value;
+    const passengers = parseInt(document.getElementById("passengers").value);
+    const pricePerTicket = 200;  // you can adjust price here
+    const totalAmount = pricePerTicket * passengers;
+
+    const bookingDetails = {
+      type: "Bus",
+      route,
+      date,
+      passengers,
+      amount: totalAmount
+    };
+
+    localStorage.setItem("confirmationDetails", JSON.stringify(bookingDetails));
+    window.location.href = "BusPayment.html";  // change the page as needed
+  });
+</script>
+
+</body>
+</html>
